@@ -1,0 +1,7 @@
+# app
+tweepy==3.5
+click>=4.1
+# testing
+pylint>=1.7.0
+pytest>=3.0.7
+pytest-cov>=2.4

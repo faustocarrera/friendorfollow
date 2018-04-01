@@ -6,9 +6,10 @@ import os
 import click
 import tweepy
 from helper import Config
+from fof import FriendOrFollow
 
 __version__ = '0.1.0'
-__updated__ = '2018-03-19'
+__updated__ = '2018-04-01'
 
 
 def get_config(file_path):
@@ -40,15 +41,18 @@ def get_path(filename):
 def run(ctx):
     config_file = get_path('config/app.conf')
     config = get_config(config_file)
-    twitter_api = setup_tweepy(config.get_twitter())
-    ctx.obj['twitter'] = None
+    ctx.obj['twitter_api'] = setup_tweepy(config.get_twitter())
 
 
 @run.command()
 @click.pass_context
-def following(ctx):
-    "The people you follow not following you"
-    pass
+def fof(ctx):
+    "Friend or follow list"
+    twitter_api = ctx.obj['twitter_api']
+    friendorfollow = FriendOrFollow(twitter_api)
+    nofollow = friendorfollow.result()
+    for user in nofollow:
+        print('http://twitter.com/{0}'.format(user.screen_name))
 
 
 if __name__ == '__main__':
